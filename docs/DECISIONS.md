@@ -20,6 +20,7 @@
 | ADR-008 | Phase 1 Dashboard 使用 Grafana 而非自寫前端 | Accepted | 2026-04-17 |
 | ADR-009 | Java Package 命名:tw.com.aidenmade.pulseplatform | Accepted | 2026-04-17 |
 | ADR-010 | Phase 1 不做冪等,Phase 2 才加 | Accepted | 2026-04-17 |
+| ADR-011 | 使用 Maven 而非 Gradle | Accepted | 2026-04-17 |
 
 ---
 
@@ -290,6 +291,33 @@ Phase 1 的 Consumer 不檢查 `eventId` 是否重複,允許重複計算。
 - 第一層:Redis SETNX(`idempotency:{eventId}`, TTL 1 小時)
 - 第二層:PG INSERT ... ON CONFLICT DO NOTHING
 - 監控:重複事件比率 metric
+
+---
+
+## ADR-011:使用 Maven 而非 Gradle
+
+- **日期**:2026-04-17
+- **狀態**:Accepted
+
+### 背景
+
+CLAUDE.md 原規劃使用 Gradle (Kotlin DSL),但 Spring Initializr 生成的初始專案為 Maven。
+
+### 決策
+
+使用 **Maven**,不切換到 Gradle。
+
+### 理由
+
+- 初始專案已用 Maven 建立,切換成本高於收益
+- Maven 在 Java 生態系成熟,3 年 Java 工程師普遍熟悉
+- Phase 1 目標是快速打通資料流,不在建置工具上花時間
+
+### Trade-off
+
+- 失去 Gradle Kotlin DSL 的型別安全設定與簡潔語法
+- `pom.xml` 比 `build.gradle.kts` 冗長
+- 對履歷展示無顯著影響
 
 ---
 

@@ -33,7 +33,7 @@
 
 - **Java 21**(**不要**用 Java 17 之前的寫法)
 - **Spring Boot 3.3.x**(**不要**用 deprecated API)
-- **Gradle**(Kotlin DSL)
+- **Maven**(見 ADR-011)
 
 ### Java 21 特性優先使用
 
