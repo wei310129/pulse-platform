@@ -3,8 +3,8 @@
 > 本專案開發進度追蹤。每週至少更新一次。
 
 **最後更新**:2026-04-17
-**目前階段**:Phase 1 準備中
-**目前 Step**:規劃完成,準備動工
+**目前階段**:Phase 1 進行中
+**目前 Step**:Step 2 — 最小 Ingestion API
 
 ---
 
@@ -24,12 +24,12 @@
 
 ### Step 1:基礎設施(Docker Compose)
 
-- [ ] 建立 `docker-compose.yml`
-- [ ] Kafka(KRaft 模式,單 broker)
-- [ ] Redis 7.x 單機
-- [ ] PostgreSQL 16
-- [ ] 三者 healthcheck 全綠
-- [ ] 手動測試:`kafka-console-producer` / `redis-cli` / `psql` 都能連
+- [x] 建立 `docker-compose.yml`
+- [x] Kafka(KRaft 模式,單 broker)
+- [x] Redis 7.x 單機
+- [x] PostgreSQL 16
+- [x] 三者 healthcheck 全綠
+- [x] 手動測試:`kafka-console-producer` / `redis-cli` / `psql` 都能連
 
 **完成判定**:`docker compose up -d` 三個服務 healthy。
 **預估工時**:半天
