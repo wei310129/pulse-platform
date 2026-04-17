@@ -1,3 +1,49 @@
 spring:
   application:
     name: pulse-platform
+
+  # ── PostgreSQL ────────────────────────────────────────────────────────────
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pulse
+    username: pulse
+    password: pulse
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none   # schema 由 Flyway 管理(Step 5 才開啟)
+    open-in-view: false
+
+  flyway:
+    enabled: true
+
+  # ── Redis ─────────────────────────────────────────────────────────────────
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # ── Jackson ───────────────────────────────────────────────────────────────
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false   # Instant → ISO-8601(ADR-007)
+
+  # ── Kafka ─────────────────────────────────────────────────────────────────
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: "true"
+      # key/value serializer 由 KafkaConfig 注入 Spring ObjectMapper 後設定
+
+    consumer:
+      group-id: pulse-main-consumer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      # deserializer 由 KafkaConsumerConfig 注入 Spring ObjectMapper 後設定
+
+# ── Logging ───────────────────────────────────────────────────────────────
+logging:
+  level:
+    tw.com.aidenmade.pulseplatform: DEBUG

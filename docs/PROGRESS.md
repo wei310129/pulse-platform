@@ -4,7 +4,7 @@
 
 **最後更新**:2026-04-17
 **目前階段**:Phase 1 進行中
-**目前 Step**:Step 2 — 最小 Ingestion API
+**目前 Step**:Step 6 — Redis 即時聚合
 
 ---
 
@@ -36,45 +36,45 @@
 
 ### Step 2:最小 Ingestion API
 
-- [ ] 建立 Spring Boot 3.3 專案(Gradle)
-- [ ] Base package:`tw.com.aidenmade.pulseplatform`
-- [ ] `POST /events` endpoint(先只 log)
-- [ ] `EventRequest` record(含 `eventId`、`serviceId`、`eventType`、`status`、`latencyMs`)
-- [ ] 驗證:eventId 必填、格式檢查
-- [ ] 回傳 202 Accepted
+- [x] 建立 Spring Boot 3.3 專案(Maven)
+- [x] Base package:`tw.com.aidenmade.pulseplatform`
+- [x] `POST /events` endpoint(先只 log)
+- [x] `EventRequest` record(含 `eventId`、`serviceId`、`eventType`、`status`、`latencyMs`)
+- [x] 驗證:eventId 必填、格式檢查
+- [x] 回傳 202 Accepted
 
 **完成判定**:curl 打 API 能看到 log。
 **預估工時**:半天 ~ 1 天
 
 ### Step 3:接上 Kafka Producer
 
-- [ ] 加入 `spring-kafka` 依賴
-- [ ] `KafkaProducerConfig`:`acks=all`、`enable.idempotence=true`
-- [ ] Topic 命名:`monitoring.events.raw`(8 partitions)
-- [ ] `EventProducer` 發送訊息,key = `serviceId`
-- [ ] JSON 序列化(Jackson)
+- [x] 加入 `spring-kafka` 依賴
+- [x] `KafkaProducerConfig`:`acks=all`、`enable.idempotence=true`
+- [x] Topic 命名:`monitoring.events.raw`(8 partitions)
+- [x] `EventProducer` 發送訊息,key = `serviceId`
+- [x] JSON 序列化(Jackson)
 
 **完成判定**:`kafka-console-consumer` 從 topic 讀得到訊息。
 **預估工時**:1 天
 
 ### Step 4:Kafka Consumer
 
-- [ ] `@KafkaListener` 消費 `monitoring.events.raw`
-- [ ] Consumer group:`pulse-main-consumer`
-- [ ] `enable-auto-commit=false`,手動 commit
-- [ ] 並行度 `concurrency=4`
-- [ ] 先只印 log,驗證消費行為
+- [x] `@KafkaListener` 消費 `monitoring.events.raw`
+- [x] Consumer group:`pulse-main-consumer`
+- [x] `enable-auto-commit=false`,手動 commit
+- [x] 並行度 `concurrency=4`
+- [x] 先只印 log,驗證消費行為
 
 **完成判定**:Producer 發,Consumer log 看得到。
 **預估工時**:1 天
 
 ### Step 5:事件落 PostgreSQL
 
-- [ ] 建立 `events` table(含 `event_id UNIQUE`)
-- [ ] Flyway migration 管理 schema
-- [ ] `EventEntity`(JPA)
-- [ ] `EventRepository`(Spring Data JPA)
-- [ ] Consumer 處理時寫入 DB
+- [x] 建立 `events` table(含 `event_id UNIQUE`)
+- [x] Flyway migration 管理 schema
+- [x] `EventEntity`(JPA)
+- [x] `EventRepository`(Spring Data JPA)
+- [x] Consumer 處理時寫入 DB
 
 **完成判定**:打 API → `SELECT * FROM events` 有資料。
 **預估工時**:1 天
