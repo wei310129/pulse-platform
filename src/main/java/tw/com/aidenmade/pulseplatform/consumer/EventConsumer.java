@@ -24,6 +24,16 @@ public class EventConsumer {
         this.metricsAggregator = metricsAggregator;
     }
 
+    /**
+     * 消費流程：
+     *   1. 把事件轉成 JPA entity 寫入 PostgreSQL(長期查詢用)
+     *   2. 呼叫 MetricsAggregator 寫 Redis(即時聚合用)
+     *   3. 手動 ack — offset 在確認寫完後才 commit,避免遺失資料
+     *
+     * 冪等處理:DB 有 UNIQUE constraint 在 event_id 上。
+     * Kafka at-least-once 語意 + consumer 重啟後可能重播舊訊息,
+     * 遇到重複 eventId 時捕捉 DataIntegrityViolationException 跳過即可。
+     */
     @KafkaListener(topics = "monitoring.events.raw")
     public void consume(EventRequest event, Acknowledgment ack) {
         log.info("event consumed: eventId={} serviceId={} eventType={} status={} latencyMs={}",

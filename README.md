@@ -110,8 +110,6 @@ pulse-platform/
 
 ## 🚀 快速開始
 
-> 🚧 專案開發中,本段落將於 Phase 1 完成後更新。
-
 ### 需求
 
 - Java 21
@@ -125,12 +123,22 @@ pulse-platform/
 docker compose up -d
 
 # 啟動應用程式
-./gradlew bootRun
+./mvnw spring-boot:run
 
-# 發送測試事件
+# 發送測試事件（eventId 必須是合法 UUID，timestamp 必填）
 curl -X POST http://localhost:8080/events \
   -H "Content-Type: application/json" \
-  -d '{"eventId":"evt-001","serviceId":"api-gateway","eventType":"REQUEST","status":"SUCCESS","latencyMs":45}'
+  -d '{
+    "eventId": "018f1e2a-3b4c-7d5e-8f9a-0b1c2d3e4f50",
+    "serviceId": "api-gateway",
+    "eventType": "REQUEST",
+    "status": "SUCCESS",
+    "latencyMs": 45,
+    "timestamp": "2026-04-21T08:00:00Z"
+  }'
+
+# 確認 Redis 有聚合資料
+docker exec pulse-redis redis-cli KEYS "metrics:*"
 ```
 
 ---
@@ -141,7 +149,7 @@ curl -X POST http://localhost:8080/events \
 
 | Phase | 範圍 | 狀態 |
 |---|---|---|
-| **Phase 1** | 核心事件流(Ingestion → Kafka → Consumer → Redis → Dashboard) | 🚧 進行中 |
+| **Phase 1** | 核心事件流(Ingestion → Kafka → Consumer → Redis → Dashboard) | 🚧 進行中(Step 1–6 完成,Step 7–9 進行中) |
 | **Phase 2** | 可靠性(冪等、DLQ、告警、觀測性) | ⏳ 規劃中 |
 | **Phase 3** | 雲原生部署(K8s、KEDA 自動擴容) | ⏳ 選配 |
 
