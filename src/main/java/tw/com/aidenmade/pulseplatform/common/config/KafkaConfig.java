@@ -18,7 +18,7 @@ import java.util.Map;
 public class KafkaConfig {
 
     /**
-     * monitoring.events.raw — 8 partitions,以 serviceId 為 key 確保同 service 有序。
+     * monitoring.events.raw — 8 partitions, 以 serviceId 為 key 確保同 service 有序。
      * replicas=1 因為 Phase 1 是單 broker。
      * 見 ADR-001、ADR-004。
      */
@@ -31,7 +31,7 @@ public class KafkaConfig {
     }
 
     /**
-     * 注入 Spring 管理的 ObjectMapper,確保 Kafka 序列化與 HTTP 層使用相同設定
+     * 注入 Spring 管理的 ObjectMapper, 確保 Kafka 序列化與 HTTP 層使用相同設定
      * (例如 write-dates-as-timestamps=false,ADR-007)。
      */
     @Bean

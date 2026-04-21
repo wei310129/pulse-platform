@@ -4,7 +4,7 @@
 
 **最後更新**:2026-04-17
 **目前階段**:Phase 1 進行中
-**目前 Step**:Step 6 — Redis 即時聚合
+**目前 Step**:Step 7 — WebSocket 推送
 
 ---
 
@@ -81,11 +81,11 @@
 
 ### Step 6:Redis 即時聚合
 
-- [ ] 加入 `spring-boot-starter-data-redis`
-- [ ] `MetricsAggregator`:根據事件更新 Redis keys
-- [ ] Key 設計:`metrics:{serviceId}:count:{bucket}` 等
-- [ ] TTL 設 1 小時
-- [ ] 單元測試:事件進來,Redis 數字正確
+- [x] 加入 `spring-boot-starter-data-redis`
+- [x] `MetricsAggregator`:根據事件更新 Redis keys
+- [x] Key 設計:`metrics:{serviceId}:count:{bucket}` 等
+- [x] TTL 設 1 小時
+- [x] 單元測試:事件進來,Redis 數字正確
 
 **完成判定**:壓測 1000 筆,`redis-cli` 看數字正確。
 **預估工時**:2 天

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+import tw.com.aidenmade.pulseplatform.aggregation.MetricsAggregator;
 import tw.com.aidenmade.pulseplatform.ingestion.EventRequest;
 import tw.com.aidenmade.pulseplatform.persistence.EventEntity;
 import tw.com.aidenmade.pulseplatform.persistence.EventRepository;
@@ -15,9 +16,11 @@ public class EventConsumer {
     private static final Logger log = LoggerFactory.getLogger(EventConsumer.class);
 
     private final EventRepository eventRepository;
+    private final MetricsAggregator metricsAggregator;
 
-    public EventConsumer(EventRepository eventRepository) {
+    public EventConsumer(EventRepository eventRepository, MetricsAggregator metricsAggregator) {
         this.eventRepository = eventRepository;
+        this.metricsAggregator = metricsAggregator;
     }
 
     @KafkaListener(topics = "monitoring.events.raw")
@@ -41,6 +44,9 @@ public class EventConsumer {
 
         eventRepository.save(entity);
         log.debug("event persisted: eventId={}", event.eventId());
+
+        metricsAggregator.record(event);
+        log.debug("metrics aggregated: eventId={}", event.eventId());
 
         ack.acknowledge();
     }
