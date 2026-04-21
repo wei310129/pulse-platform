@@ -2,6 +2,7 @@ package tw.com.aidenmade.pulseplatform.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -42,8 +43,15 @@ public class EventConsumer {
                 .createdAt(event.timestamp())
                 .build();
 
-        eventRepository.save(entity);
-        log.debug("event persisted: eventId={}", event.eventId());
+        try {
+            eventRepository.save(entity);
+            log.debug("event persisted: eventId={}", event.eventId());
+        } catch (DataIntegrityViolationException e) {
+            // 重複事件(重啟後 Kafka offset 重播) — ack 後跳過,Phase 2 再做完整冪等消費
+            log.warn("duplicate event skipped: eventId={}", event.eventId());
+            ack.acknowledge();
+            return;
+        }
 
         metricsAggregator.record(event);
         log.debug("metrics aggregated: eventId={}", event.eventId());
