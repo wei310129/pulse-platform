@@ -33,8 +33,15 @@ spring:
     bootstrap-servers: localhost:9092
     producer:
       acks: all
+      retries: 3
       properties:
-        enable.idempotence: "true"
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        compression.type: zstd
+        linger.ms: 10
+        batch.size: 32768
+        delivery.timeout.ms: 30000
+        request.timeout.ms: 10000
       # key/value serializer 由 KafkaConfig 注入 Spring ObjectMapper 後設定
 
     consumer:
