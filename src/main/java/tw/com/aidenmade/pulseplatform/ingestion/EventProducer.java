@@ -1,14 +1,12 @@
 package tw.com.aidenmade.pulseplatform.ingestion;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class EventProducer {
-
-    private static final Logger log = LoggerFactory.getLogger(EventProducer.class);
     private static final String TOPIC = "monitoring.events.raw";
 
     private final KafkaTemplate<String, Object> kafkaTemplate;

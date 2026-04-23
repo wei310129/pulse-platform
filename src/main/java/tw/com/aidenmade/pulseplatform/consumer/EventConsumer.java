@@ -1,7 +1,6 @@
 package tw.com.aidenmade.pulseplatform.consumer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
@@ -12,10 +11,8 @@ import tw.com.aidenmade.pulseplatform.persistence.EventEntity;
 import tw.com.aidenmade.pulseplatform.persistence.EventRepository;
 
 @Component
+@Slf4j
 public class EventConsumer {
-
-    private static final Logger log = LoggerFactory.getLogger(EventConsumer.class);
-
     private final EventRepository eventRepository;
     private final MetricsAggregator metricsAggregator;
 
